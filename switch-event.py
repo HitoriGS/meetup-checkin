@@ -6,7 +6,8 @@
 
 import json, subprocess, sys
 
-API_KEY  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMmI4YTdmYS05OGUxLTQ5MmQtYjVkNy1jMzIwMjQ2ODQxOWEiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzc4MTI4MjMzLCJleHAiOjE3ODA2NzUyMDB9.xYXdkJX1SC-s0Kt8IAGZ17_PngvDLWfNbgKsbpXkP6E"
+import os
+API_KEY  = os.environ.get("N8N_API_KEY") or open(".env").read().strip().split("N8N_API_KEY=")[-1].splitlines()[0]
 BASE_URL = "https://hitorigs.zeabur.app"
 
 # 三條需要更新的 workflow ID
