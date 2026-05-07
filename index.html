@@ -130,9 +130,24 @@
   .btn-camera-on  { background: #9147ff; color: #fff; max-width: 340px; }
   .btn-camera-off { background: #3a1a6e; color: #c4a0f5; max-width: 340px; }
 
+  #checkin-count {
+    flex-shrink: 0;
+    padding: 16px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+  }
+  #checkin-count span {
+    font-size: 32px;
+    font-weight: 700;
+    color: #9147ff;
+    display: block;
+    margin-bottom: 2px;
+  }
+
   footer {
     flex-shrink: 0;
-    padding: 20px 16px 28px;
+    padding: 8px 16px 28px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -165,6 +180,11 @@
     <button class="btn btn-confirm" id="btn-confirm" onclick="confirmCheckin()">確認報到</button>
     <button class="btn btn-rescan"  id="btn-rescan"  onclick="resumeScanning()">重新掃描</button>
   </div>
+</div>
+
+<div id="checkin-count">
+  <span id="count-num">—</span>
+  今日已報到人數
 </div>
 
 <script>
@@ -387,6 +407,7 @@ async function confirmCheckin() {
       set('icon', '🎉');
       set('msg',  '報到成功！3 秒後自動繼續掃描');
       hide('btn-confirm');
+      fetchCount();
       setTimeout(resumeScanning, 3000);
     } else {
       btn.disabled    = false;
@@ -429,6 +450,18 @@ function set(id, text, cls) {
     if (cls) el.className += ' ' + cls;
   }
 }
+
+/* ── Today's count ─────────────────────────────────── */
+
+async function fetchCount() {
+  try {
+    const res  = await fetch(BASE + '/webhook/count');
+    const data = await res.json();
+    document.getElementById('count-num').textContent = data.count ?? '—';
+  } catch (_) {}
+}
+
+fetchCount();
 </script>
 
 <footer>
